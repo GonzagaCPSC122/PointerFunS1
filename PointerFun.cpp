@@ -4,6 +4,8 @@ using namespace std;
 
 void divide(int num, int den, int * res, int * rem);
 void printArray(int * arr, int size);
+void swapIt(int * xPtr, int * yPtr);
+int * createRandomArray(int size);
 
 int main() {
 	int i = 3, j = 5, k;
@@ -54,9 +56,51 @@ int main() {
 	int nums[] = {3, 56, 9, 1}; 
 	int size = 4;
 	printArray(nums, size);
-
+	
+	int x = 5;
+	int y = 7;
+	swapIt(p, q);
+	cout << x << " " << y << endl;
+	
+	// DYNAMIC MEMORY ALLOCATION
+	// recall: a local variable is a variable
+	// define inside a function
+	// when a function exits, local variables are deallocated
+	// local variables are declared in a region of memory called the "stack"
+	// NEVER return the address of a local variable
+	// to return memory allocated in a function, that memory must be allocated in the "heap" AKA free store
+	// heap memory is not deallocted when the function exits
+	// it is deallocated when you (the programmer) "free" it
+	// if you don't free it, then you program has a "memory leak"
+	// use the "new" keyword to dyn allocate memory in the heap
+	// use the "delete" keyword to free memory that from the heap
+	// example: a function that allocates
+	// an array and returns the array
+	int * randArr = NULL;
+	randArr = createRandomArray(10);
+	printArray(randArr, 10);
+	// don't forget to delete!!
+	delete [] randArr; // deallocates AKA frees
+	randArr = NULL; // good practice
+	
 	return 0;
 }
+
+int * createRandomArray(int size) {
+	int i; // statically allocated on the stack
+	int * arr = new int[size]; // dyn allocated on the heap
+	for (i = 0; i < size; i++) {
+		*(arr + i) = rand() % size;
+	}
+	return arr; // calling code's responisiblity to free arr when its done with it
+}
+
+void swapIt(int * xPtr, int * yPtr) {
+	xPtr = yPtr;
+	int temp = *xPtr; // 5
+	*xPtr = *yPtr; // 7
+	*yPtr = temp; // 5
+} 
 
 void printArray(int * arr, int size) {
 	int i;
